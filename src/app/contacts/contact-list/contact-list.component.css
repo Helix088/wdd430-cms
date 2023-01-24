@@ -1,14 +1,16 @@
-.contact-head-row {
-    margin-left: 0.2rem;
+.panel-heading {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.title {
+font-size: 2.5rem;
+font-weight: bold;
 }
 
 hr {
-    margin-top: 0;
-}
-
-.create-contact {
-    padding: 2rem;
-    max-width: 148px;
+    margin: 0;
+    margin-bottom: 2rem;
 }
 
 .contact-row {

@@ -1,9 +1,10 @@
 .panel-heading {
-    padding-top: 3rem;
+    padding-top: 2rem;
     padding-bottom: 2rem;
     padding-right: 7rem;
 }
 
 .update-buttons {
+    margin-top: 5rem;
     margin-right: -5rem;
 }
