@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Contact } from '../contact.model';
 
 @Component({
@@ -6,7 +6,9 @@ import { Contact } from '../contact.model';
   templateUrl: './contact-detail.component.html',
   styleUrls: ['./contact-detail.component.css'],
 })
-export class ContactDetailComponent {
+export class ContactDetailComponent implements OnInit {
+  @Input() contact: Contact;
+
   contacts: Contact[] = [
     new Contact(
       '',
@@ -15,10 +17,10 @@ export class ContactDetailComponent {
       '',
       '',
       undefined
-    ),
+    )
   ];
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 }

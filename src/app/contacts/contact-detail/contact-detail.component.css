@@ -1,5 +1,7 @@
 .panel-heading {
-    padding: 7rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    padding-right: 7rem;
 }
 
 .update-buttons {
