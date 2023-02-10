@@ -8,6 +8,7 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 export class ContactService implements OnInit {
   contacts: Contact[] = [];
   contactSelectedEvent = new EventEmitter<Contact>();
+  contactChangedEvent = new EventEmitter<Contact[]>();
 
   constructor() {
     this.contacts = MOCKCONTACTS;
@@ -20,12 +21,25 @@ export class ContactService implements OnInit {
     return this.contacts.slice();
   }
 
-  getContact(id: string) {
-    for (const contact of this.contacts) {
-      if (contact.id == id) {
-        return contact;
-      }
+  getContact(index: string) {
+    return this.contacts[index];
+    // for (const contact of this.contacts) {
+    //   if (contact.id == id) {
+    //     return contact;
+    //   }
+    // }
+    // return null;
+  }
+
+  deleteContact(contact: Contact) {
+    if (!contact) {
+      return;
     }
-    return null;
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) {
+      return;
+    }
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
   }
 }

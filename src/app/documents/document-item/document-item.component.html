@@ -1,4 +1,6 @@
-<a class="list-group-item clearfix documentDiv"
-(click)="onSelected()">
+<a [routerLink]="[index]"
+routerLinkActive="active" class="list-group-item clearfix documentDiv">
   {{ document.name }}
 </a>
+
+<!-- (click)="onSelected()" -->

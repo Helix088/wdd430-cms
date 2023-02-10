@@ -2,16 +2,16 @@
   <div class="panel-heading">
     <div class="row pad-left-right">
       <span class="pull-left title">Contacts</span>
-      <a class="btn btn-success pull-right">New Contact</a>
+      <a routerLink="new" class="btn btn-success pull-right">New Contact</a>
     </div>
   </div>
   <hr />
   <div class="row contact-row">
     <div class="col-xs-12">
       <app-contact-item
-        *ngFor="let contactEl of contacts"
+        *ngFor="let contactEl of contacts; let i = index"
         [contact]="contactEl"
-        (contactSelected)="onSelected(contactEl)"
+        [index]="i"
       ></app-contact-item>
     </div>
   </div>
