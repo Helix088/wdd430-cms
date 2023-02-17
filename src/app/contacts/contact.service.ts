@@ -33,7 +33,7 @@ export class ContactService implements OnInit {
     // return null;
   }
 
-  addDocument(newContact: Contact) {
+  addContact(newContact: Contact) {
     if (!newContact) {
       return;
     }
@@ -44,7 +44,7 @@ export class ContactService implements OnInit {
     this.contactListChangedEvent.next(contactsListClone);
   }
 
-  updateDocument(originalContact: Contact, newContact: Contact) {
+  updateContact(originalContact: Contact, newContact: Contact) {
     if (!originalContact || !newContact) {
       return;
     }
