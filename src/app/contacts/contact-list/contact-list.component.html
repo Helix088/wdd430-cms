@@ -8,9 +8,10 @@
   <hr />
   <div class="row contact-row">
     <div class="col-xs-12">
-      <app-contact-item
-        *ngFor="let contactEl of contacts; let i = index"
-        [contact]="contactEl"
+      <app-contact-item class="col-sm-11"
+        *ngFor="let contact of contacts; let i = index"
+        [contact]="contact" dnd-draggable [dragEnabled]="true" [dragData]="contact" 
+        [dropZones]="['contactGroup']"
         [index]="i"
       ></app-contact-item>
     </div>
