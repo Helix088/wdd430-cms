@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { Document } from './document.model';
-import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
+// import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +14,28 @@ export class DocumentService implements OnInit{
   documentChangedEvent = new EventEmitter<Document[]>();
   maxDocumentId: number;
 
-  constructor() {
-    this.documents = MOCKDOCUMENTS;
-    this.maxDocumentId = this.getMaxId();
+  constructor(private http: HttpClient) {
+    // this.documents = MOCKDOCUMENTS;
+    // this.maxDocumentId = this.getMaxId();
   }
 
   ngOnInit() {}
 
   getDocuments() {
-    return this.documents.slice();
+    // return this.documents.slice();
+    this.http.get(
+      'https://cms-project-acb01-default-rtdb.firebaseio.com/documents.json'
+    ).subscribe(
+      (documents: Document[] = []) => {
+        this.documents = documents;
+        this.maxDocumentId = this.getMaxId();
+        documents.sort((a, b) => (a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0);
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    )
   }
 
   getDocument(index: string) {
@@ -34,6 +48,23 @@ export class DocumentService implements OnInit{
     // return null;
   }
 
+  storeDocuments() {
+    let documents = JSON.parse(JSON.stringify(this.documents));
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http.put(
+      'https://cms-project-acb01-default-rtdb.firebaseio.com/documents.json',
+      documents,
+      {headers}
+    ).subscribe(
+     (response) => {
+      this.documentListChangedEvent.next(this.documents.slice()), response;
+     },
+      (error) => {
+        console.error('Error saving documents: ', error);
+      }
+    );
+  }
+
   addDocument(newDocument: Document) {
     if (!newDocument) {
       return;
@@ -42,7 +73,7 @@ export class DocumentService implements OnInit{
     newDocument.id = String(this.maxDocumentId);
     this.documents.push(newDocument);
     let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
@@ -56,7 +87,7 @@ export class DocumentService implements OnInit{
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
     let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   deleteDocument(document: Document) {
@@ -69,7 +100,7 @@ export class DocumentService implements OnInit{
     }
     this.documents.splice(pos, 1);
     let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   getMaxId() {

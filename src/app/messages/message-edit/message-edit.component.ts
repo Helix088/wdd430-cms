@@ -20,7 +20,7 @@ export class MessageEditComponent implements OnInit {
     const ingSubject = this.subjectInputRef.nativeElement.value;
     const ingMsgText = this.msgTextInputRef.nativeElement.value;
     const newMessage = new Message(
-      '1',
+      '6',
       ingSubject,
       ingMsgText,
       this.currentSender

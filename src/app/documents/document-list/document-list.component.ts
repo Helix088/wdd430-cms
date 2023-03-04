@@ -11,18 +11,18 @@ import {  } from '@angular/core';
 })
 export class DocumentListComponent implements OnInit, OnDestroy {
   documents: Document[] = [];
-  documentId: string = '';
   private subscription: Subscription;
 
   constructor(private documentService: DocumentService) {
-    this.documents = this.documentService.getDocuments();
+    
   }
   ngOnInit() {
     this.subscription = this.documentService.documentListChangedEvent.subscribe(
       (documents: Document[]) => {
         this.documents = documents;
       }
-    )
+    );
+    this.documentService.getDocuments();
   }
 
   ngOnDestroy(): void {
