@@ -9,7 +9,7 @@ import { DocumentsComponent } from "./documents/documents.component";
 import { MessagesComponent } from "./messages/messages.component";
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/documents', pathMatch: 'full' },
+  { path: '', redirectTo: '/', pathMatch: 'full' },
   {
     path: 'documents',
     component: DocumentsComponent,
