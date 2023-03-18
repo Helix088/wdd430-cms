@@ -22,20 +22,17 @@ export class MessageService implements OnInit {
 
   getMessages() {
     // return this.messages.slice();
-    this.http
-      .get(
-        'https://cms-project-acb01-default-rtdb.firebaseio.com/messages.json'
-      )
-      .subscribe((messages: Message[] = []) => {
+    this.http.get('http://localhost:3000/messages').subscribe(
+      (messages: Message[] = []) => {
         this.messages = messages;
         this.maxMessageId = this.getMaxId();
         messages.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
         this.messageListChangedEvent.next(this.messages.slice());
       },
-        (error: any) => {
-          console.error(error);
-        }
-      );
+      (error: any) => {
+        console.error(error);
+      }
+    );
   }
 
   getMessage(index: string): Message[] {
@@ -66,8 +63,23 @@ export class MessageService implements OnInit {
   }
 
   addMessage(message: Message) {
-    this.messages.push(message);
-    this.storeMessages();
+    if (!message) {
+      return;
+    }
+
+    message.id = '';
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post<{ messageString: string; message: Message }>(
+        'http://localhost:3000/messages',
+        message,
+        { headers: headers }
+      )
+      .subscribe((responseData) => {
+        this.messages.push(responseData.message);
+      });
   }
 
   getMaxId() {

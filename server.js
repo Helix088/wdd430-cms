@@ -5,6 +5,7 @@ var http = require("http");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var mongoose = require("mongoose");
 
 // import the routing file to handle the default (index) route
 var index = require("./server/routes/app");
@@ -13,6 +14,34 @@ var index = require("./server/routes/app");
 const messageRoutes = require('./server/routes/messages');
 const contactRoutes = require("./server/routes/contacts");
 const documentRoutes = require("./server/routes/documents");
+
+
+// connect to MongoDB using Mongoose
+mongoose.connect('mongodb://127.0.0.1:27017/cms', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// listen for connection events and handle errors
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose connected to database');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log(`Mongoose connection error: ${err}`);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose disconnected');
+});
+
+// close Mongoose connection when Node process exits
+process.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    console.log('Mongoose connection closed due to app termination');
+    process.exit(0);
+  });
+});
 
 var app = express(); // create an instance of express
 
